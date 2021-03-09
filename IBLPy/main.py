@@ -61,13 +61,15 @@ class BotClient():
         """
             Synchronously get a bot. This does not take any parameters.
 
-            **Return Types**
+            :return: If the bot was not found or if IBLPy could not parse the JSON request for any reason
+            :rtype: None
 
-            None - If the bot was not found or if IBLPy could not parse the JSON request for any reason
+            :return: This will be returned if you are ratelimited
+            :rtype: IBLAPIResponse
 
-            IBLAPIResponse - This will be returned if you are ratelimited
+            :return: This is the bot object returned from the API
+            :rtype: IBLBot
 
-            IBLBot - This is the bot object returned from the API
         """
         sync_api()
         return api_brain.get_bot_sync(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
