@@ -1,3 +1,4 @@
 myst_parser
 furo
 sphinx-autodoc-typehints
+orjson
