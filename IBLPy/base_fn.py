@@ -25,18 +25,38 @@ class IBLAPIResponse():
 
 class IBLAPIRatelimit(Exception):
     def __init__(self):
-        super().__init__("You are being ratelimited by the Infinity Bots (IBL) API. For future reference, the ratelimit is 3 requests per 5 minutes!")
+        super().__init__("You are being ratelimited by the Infinity Bots (IBL) API. For future reference, the ratelimit for posting stats is 3 requests per 5 minutes and is unknown/variable for getting stats!")
 
 class IBLInvalidEndpoint(Exception):
     def __init__(self, required, current):
         super().__init__(f"This endpoint can only be used by a {required} however you are a {current}")
 
+class IBLBot():
+    """
+        Represents a bot on IBL
+    """
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+        self.guild_count = self.analytics["servers"]
+        self.shard_count = self.analytics["shards"]
+        self.votes = self.analytics["votes"]
+        self.invites = self.analytics["invites"]
+        del self.__dict__["analytics"]
+
+    def dict(self):
+        return self.__dict__
+
+    def __str__(self):
+        return self.name
+
+    def __int__(self):
+        return self.id
 
 def async_api():
     if "async" not in api_modes:
         raise InvalidMode("async")
 
-def sync_api(fn):
+def sync_api():
     if "sync" not in api_modes:
         raise InvalidMode("sync")
 
