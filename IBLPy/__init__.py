@@ -12,10 +12,19 @@ try:
 except:
     requests = None
 
+try:
+    import uvicorn
+    import fastapi
+    api_modes.append("webhook")
+except:
+    uvicorn = None
+    fastapi = None
+
 if api_modes == []:
     raise ibl_base.NoSuitableModesFound()
 
 from IBLPy.base_fn import *
-from IBLPy.main import Client
+from IBLPy.main import BotClient, Webhook
 from IBLPy.config import *
 from IBLPy.api_brain import *
+from IBLPy.ws import *

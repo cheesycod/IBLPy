@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'IBLPy'
-copyright = '2021, Infinity Bot List'
+copyright = 'Infinity Bot List. Made By Rootspring'
 author = 'Rootspring'
 
 # The full version, including alpha/beta/rc tags

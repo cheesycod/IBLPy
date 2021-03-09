@@ -12,6 +12,8 @@ class InvalidMode(Exception):
             super().__init__("In order to use IBLPy asynchronous API requests, you must have aiohttp_requests installed")
         elif mode == "sync":
             super().__init__("In order to use IBLPy synchronous API requests, you must have requests installed")
+        elif mode == "fastapi":
+            super().__init__("In order to use IBLPy webhooks, you must have fastapi and uvicorn installed")
 
 class IBLAPIResponse():
     def __init__(self, *, raw_res, success, message, data, status):
