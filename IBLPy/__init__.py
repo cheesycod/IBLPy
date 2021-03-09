@@ -16,6 +16,6 @@ if api_modes == []:
     raise ibl_base.NoSuitableModesFound()
 
 from IBLPy.base_fn import *
-from IBLPy.main import IBLCli
+from IBLPy.main import Client
 from IBLPy.config import *
 from IBLPy.api_brain import *

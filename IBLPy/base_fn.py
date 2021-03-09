@@ -25,17 +25,20 @@ class IBLAPIRatelimit(Exception):
     def __init__(self):
         super().__init__("You are being ratelimited by the Infinity Bots (IBL) API. For future reference, the ratelimit is 3 requests per 5 minutes!")
 
-def async_api(fn):
-    async def wrapper(*args, **kwargs):
-        if "async" not in api_modes:
-            raise InvalidMode("async")
-        return await fn(*args, **kwargs)
-    return wrapper
+class IBLInvalidEndpoint(Exception):
+    def __init__(self, required, current):
+        super().__init__(f"This endpoint can only be used by a {required} however you are a {current}")
+
+
+def async_api():
+    if "async" not in api_modes:
+        raise InvalidMode("async")
 
 def sync_api(fn):
-    def wrapper(*args, **kwargs):
-        if "sync" not in api_modes:
-            raise InvalidMode("sync")
-        return fn(*args, **kwargs)
-    return wrapper
+    if "sync" not in api_modes:
+        raise InvalidMode("sync")
+
+def bot_only(user):
+    if user != "bot": 
+        raise IBLInvalidEndpoint("bot", user)
 
