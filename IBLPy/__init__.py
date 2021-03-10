@@ -5,6 +5,9 @@ try:
     api_modes.append("async")
 except:
     requests_async = None
+    class aiohttp():
+        class ClientSession():
+            pass
 
 try:
     import requests
@@ -22,6 +25,15 @@ except:
 
 if api_modes == []:
     raise ibl_base.NoSuitableModesFound()
+
+try:
+    import discord
+    autoposter = True
+except:
+    class discord():
+        class Client():
+            pass
+    autoposter = False
 
 from IBLPy.base_fn import *
 from IBLPy.main import *

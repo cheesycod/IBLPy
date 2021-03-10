@@ -1,10 +1,11 @@
 import IBLPy.config as cfg
 import IBLPy.api_brain as api_brain
 from IBLPy.base_fn import async_api, sync_api, bot_only, InvalidMode, IBLAPIResponse
-from IBLPy import api_modes, fastapi, uvicorn, ws
+from IBLPy import api_modes, fastapi, uvicorn, ws, autoposter, discord
 from typing import Optional
 import os
 import asyncio
+import time
 
 class BotClient():
     """
@@ -15,13 +16,11 @@ class BotClient():
         :param api_token: The API Token of the bot. You can find this by clicking API Token under the "Owner Section". This is optional however you will not be able to post stats if you do not pass a API Token
 
         :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error
-
     """
 
     def __init__(self, id: int, api_token: Optional[str] = "", error_on_ratelimit: bool = True):
         self.id = id
         self.api_token = api_token
-        self.api_url = cfg.api
         self.error_on_ratelimit = error_on_ratelimit
 
     async def set_stats_async(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
@@ -38,7 +37,7 @@ class BotClient():
         async_api()
         return await api_brain.set_stats_async(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
     
-    def set_stats_sync(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
+    def set_stats(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
             Posts bot stats to the IBL API synchronously
 
@@ -52,12 +51,7 @@ class BotClient():
         sync_api()
         return api_brain.set_stats_sync(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
     
-    def set_stats(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
-        """This is a shortcut to the ``set_stats_sync`` function. Please see that functions documentation"""
-        sync_api()
-        return self.set_stats_sync(guild_count, shard_count) # Shortcut to set_stats_sync
-
-    def get_bot_sync(self):
+    def get_bot(self):
         """
             Synchronously get a bot. This does not take any parameters.
 
@@ -69,36 +63,124 @@ class BotClient():
 
             :return: This is the bot object returned from the API
             :rtype: IBLBot
-
         """
         sync_api()
         return api_brain.get_bot_sync(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
-
-    def get_bot(self):
-        """This is a shortcut to the ``get_bot_sync`` function. Please see that functions documentation"""
-        sync_api()
-        return self.get_bot_sync()
 
     async def get_bot_async(self):
         """
             Asynchronously get a bot. This does not take any parameters.
 
-            **Return Types**
+            :return: If the bot was not found or if IBLPy could not parse the JSON request for any reason
+            :rtype: None
 
-            None - If the bot was not found or if IBLPy could not parse the JSON request for any reason
+            :return: This will be returned if you are ratelimited
+            :rtype: IBLAPIResponse
 
-            IBLAPIResponse - This will be returned if you are ratelimited
-
-            IBLBot - This is the bot object returned from the API
+            :return: This is the bot object returned from the API
+            :rtype: IBLBot
         """
         async_api()
         return await api_brain.get_bot_async(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+
+class UserClient():
+    """
+        Initialize a Infinity Bots List (IBL) User Client. You can use this to get user stats!
+            
+        :param id: The User ID you wish to use with the IBL API
+
+        :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error
+    """
+    def __init__(self, id: int, api_token: Optional[str] = "", error_on_ratelimit: bool = True):
+        self.id = id
+        self.error_on_ratelimit = error_on_ratelimit
+
+    def get_user(self):
+        """
+            Synchronously get a user. This does not take any parameters.
+
+            :return: If the user was not found or if IBLPy could not parse the JSON request for any reason
+            :rtype: None
+
+            :return: This will be returned if you are ratelimited
+            :rtype: IBLAPIResponse
+
+            :return: This is the user object returned from the API
+            :rtype: IBLUser
+
+        """
+        sync_api()
+        return api_brain.get_user_sync(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+
+    async def get_user_async(self):
+        """
+            Asynchronously get a user. This does not take any parameters.
+
+            :return: If the user was not found or if IBLPy could not parse the JSON request for any reason
+            :rtype: None
+
+            :return: This will be returned if you are ratelimited
+            :rtype: IBLAPIResponse
+
+            :return: This is the user object returned from the API
+            :rtype: IBLUser
+        """
+        async_api()
+        return await api_brain.get_user_async(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+
+class AutoPoster():
+    """
+        This is IBL Auto Poster. It will post stats for you on an interval you decide and it will then run a function of your choice (if requested) after posting each time.
+
+        :param interval: How long to wait each time you post. It is required to use at least 5 minutes which is 300 seconds. Specifying a value below 300 seconds will set the interval to 300 seconds anyways
+
+        :param botcli: The IBL BotClient of the bot you want to post stats for. It must have the API token set either during initialization or afterwards by setting the api_token parameter
+
+        :param discli: The discord.Client (or like interfaces like discord.Bot/discord.AutoShardedBot) of the bot you want to post stats for. If you wish to add shard counts, please give a discord.AutoShardedClient and pass sharding = True
+
+        :param on_post: The function to call after posting. Set to None if you don't want this. This function needs to accept two arguments, the guild count sent and the shard count set. Shard count will be None if sharding is disabled
+
+        :param sharding: Whether we should post sharding as well. Requires a discord.AutoShardedClient
+    """
+    def __init__(self, interval: int, botcli: BotClient, discli: discord.Client, sharding = None, on_post = None):
+        if interval > 300:
+            self.interval = interval
+        else:
+            self.interval = 300
+        self.botcli = botcli
+        self.discli = discli
+        self.on_post = on_post
+        self.sharding = sharding
+
+    async def autoposter(self):
+        """This is the autoposting function that is run by the ``start`` function here (using asyncio.create_task)"""
+        while True:
+            if self.interval < 300:
+                self.interval = 300
+            try:
+                if self.sharding in [False, None]:
+                    await self.botcli.set_stats_async(len(self.discli.guilds))
+                else:
+                    await self.botcli.set_stats_async(len(self.discli.guilds), len(self.discli.shards))
+                if self.on_post:
+                    if self.sharding in [False, None]:
+                        await self.on_post(len(self.discli.guilds), None)
+                    else:
+                        await self.on_post(len(self.discli.guilds), len(self.discli.shards))
+                print(f"IBLPy: Stats posted successfully at {time.time()}")
+            except Exception as ex:
+                print(f"IBLPy: Could not post stats because: {ex}")
+            await asyncio.sleep(self.interval)
+
+    def start(self):
+        """Starts the auto poster using asyncio.create_task. This must be done in the on_ready function in discord.py"""
+        asyncio.create_task(self.autoposter())
 
 class Webhook():
     """
         This is an IBLPy webhook. It takes a BotClient and your webhook secret. To start your webhook:
 
-            Use start_ws_task if you are running this in discord.py. make sure you start the webhook in your on_ready event
+            Use start_ws_task if you are running this in discord.py. make sure you start the webhook in your on_ready event (at the very end of it since it's blocking)
 
             Use start_ws_normal if you are running this seperately from discord.py. It will be run using asyncio.run instead of asyncio.create_task
 
@@ -114,7 +196,7 @@ class Webhook():
 
     def start_ws_task(self, route, func, port = 8012):
         """
-            Start webhook using asyncio.create_task (discord.py). Use this in a discord.py on_ready event.
+            Start webhook using asyncio.create_task (discord.py). Use this in a discord.py on_ready event (at the very end of it since it's blocking).
         """
         asyncio.create_task(self.start_ws(route, port = port, func = func))
 
