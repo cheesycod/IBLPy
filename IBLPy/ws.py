@@ -2,7 +2,6 @@ try:
     from fastapi import APIRouter, Header, Request
     from starlette.exceptions import HTTPException as StarletteHTTPException
     from pydantic import BaseModel
-    import uuid
     from typing import Optional, Union
 
     router = APIRouter(include_in_schema = False)

@@ -24,7 +24,9 @@ if api_modes == []:
     raise ibl_base.NoSuitableModesFound()
 
 from IBLPy.base_fn import *
-from IBLPy.main import BotClient, Webhook
+from IBLPy.main import *
 from IBLPy.config import *
 from IBLPy.api_brain import *
 from IBLPy.ws import *
+
+__version__ = version

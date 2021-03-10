@@ -1,6 +1,6 @@
 import IBLPy.config as cfg
 import IBLPy.api_brain as api_brain
-from IBLPy.base_fn import async_api, sync_api, bot_only, InvalidMode
+from IBLPy.base_fn import async_api, sync_api, bot_only, InvalidMode, IBLAPIResponse
 from IBLPy import api_modes, fastapi, uvicorn, ws
 from typing import Optional
 import os
@@ -8,7 +8,7 @@ import asyncio
 
 class BotClient():
     """
-        Initialize a Infinity Bots List (IBL) Bot Client
+        Initialize a Infinity Bots List (IBL) Bot Client. You can use this to get/post bot stats and fetch a bot!
             
         :param id: The Bot ID you wish to use with the IBL API
 
@@ -24,7 +24,7 @@ class BotClient():
         self.api_url = cfg.api
         self.error_on_ratelimit = error_on_ratelimit
 
-    async def set_stats_async(self, guild_count: int, shard_count: Optional[int] = None):
+    async def set_stats_async(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
             Posts bot stats to the IBL API asynchronously
             
@@ -38,7 +38,7 @@ class BotClient():
         async_api()
         return await api_brain.set_stats_async(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
     
-    def set_stats_sync(self, guild_count: int, shard_count: Optional[int] = None):
+    def set_stats_sync(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
             Posts bot stats to the IBL API synchronously
 
@@ -52,7 +52,7 @@ class BotClient():
         sync_api()
         return api_brain.set_stats_sync(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
     
-    def set_stats(self, guild_count: int, shard_count: Optional[int] = None):
+    def set_stats(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """This is a shortcut to the ``set_stats_sync`` function. Please see that functions documentation"""
         sync_api()
         return self.set_stats_sync(guild_count, shard_count) # Shortcut to set_stats_sync
@@ -95,6 +95,17 @@ class BotClient():
         return await api_brain.get_bot_async(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
 
 class Webhook():
+    """
+        This is an IBLPy webhook. It takes a BotClient and your webhook secret. To start your webhook:
+
+            Use start_ws_task if you are running this in discord.py. make sure you start the webhook in your on_ready event
+
+            Use start_ws_normal if you are running this seperately from discord.py. It will be run using asyncio.run instead of asyncio.create_task
+
+            Use the start_ws coroutine if you want to run the webhook yourself using asyncio
+
+            Use create_app if you want to get the FastAPI ASGI app and deploy the webhook using your own server. Uvicorn still needs to be installed even if you use a different ASGI server
+    """
     def __init__(self, botcli: BotClient, secret: str = None):
         if "webhook" not in api_modes:
             raise InvalidMode("fastapi")
@@ -102,12 +113,19 @@ class Webhook():
         self.secret = secret
 
     def start_ws_task(self, route, func, port = 8012):
+        """
+            Start webhook using asyncio.create_task (discord.py). Use this in a discord.py on_ready event.
+        """
         asyncio.create_task(self.start_ws(route, port = port, func = func))
 
     def start_ws_normal(self, route, func, port = 8012):
+        """
+            Start webhook using asyncio.run for normal non-discord.py usecases
+        """
         asyncio.run(self.start_ws(route, port = port, func = func))
 
-    async def start_ws(self, route, func, port = 8012):
+    def create_app(self, route, func):
+        """Creates a FastAPI ASGI app and returns it so you can deploy it how you want to deploy it"""
         ws.wh_func = func
         ws.botcli = self.botcli
         ws.secret = self.secret
@@ -116,10 +134,15 @@ class Webhook():
             router = ws.router,
             prefix=route,
         )
-        server = uvicorn.Server(uvicorn.Config(app, host = "0.0.0.0", port = port))
+        return app
+
+    async def start_ws(self, route, func, port = 8012):
+        """
+            Coroutine to start webhook using any asyncio method you want.
+        """
+        server = uvicorn.Server(uvicorn.Config(self.create_app(route, func), host = "0.0.0.0", port = port))
         await server.serve()
         try:
             os._exit()
         except:
             os._exit(0)
-
