@@ -69,7 +69,7 @@ class IBLBot(IBLBaseUser):
 
         :param id: The id of the bot. This will be a integer
 
-        :param name: The name of the bot. This will be a string
+        :param username: The name of the bot. This will be a string
 
         :param tags: The tags of the bot. To make it easier for you, IBLPy makes this a list instead of the comma seperated string returned by the IBL API. This will be a list
 
@@ -139,6 +139,10 @@ class IBLBot(IBLBaseUser):
 
         # Handle tags
         self.tags = self.tags.replace(" ", "").split(",")
+
+        # Handle name -> username convert
+        self.username = self.name
+        del self.__dict__["name"]
 
 class IBLUser(IBLBaseUser):
     """

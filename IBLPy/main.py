@@ -132,6 +132,8 @@ class AutoPoster():
     """
         This is IBL Auto Poster. It will post stats for you on an interval you decide and it will then run a function of your choice (if requested) after posting each time.
 
+        You can stop a Auto Poster by calling the ``stop`` function.
+
         :param interval: How long to wait each time you post. It is required to use at least 5 minutes which is 300 seconds. Specifying a value below 300 seconds will set the interval to 300 seconds anyways
 
         :param botcli: The IBL BotClient of the bot you want to post stats for. It must have the API token set either during initialization or afterwards by setting the api_token parameter
@@ -151,12 +153,20 @@ class AutoPoster():
         self.discli = discli
         self.on_post = on_post
         self.sharding = sharding
+        self.keep_running = True
+        self.task = None
 
     async def autoposter(self):
         """This is the autoposting function that is run by the ``start`` function here (using asyncio.create_task)"""
         while True:
+            if not self.keep_running:
+                self.keep_running = True
+                print("IBLPy: AutoPoster has exited successfully!")
+                return
+
             if self.interval < 300:
                 self.interval = 300
+
             try:
                 if self.sharding in [False, None]:
                     await self.botcli.set_stats_async(len(self.discli.guilds))
@@ -173,12 +183,25 @@ class AutoPoster():
             await asyncio.sleep(self.interval)
 
     def start(self):
-        """Starts the auto poster using asyncio.create_task. This must be done in the on_ready function in discord.py"""
-        asyncio.create_task(self.autoposter())
+        """Starts the auto poster using asyncio.create_task and returns the created task. This must be done in the on_ready function in discord.py"""
+        self.task = asyncio.create_task(self.autoposter())
+        return self.task
+
+    def stop(self):
+        """
+            Stops the auto poster by setting the ``keep_running`` attribute to False. Since the exact name may change, it is recommended to use ``stop`` instead of manually setting the attribute.
+
+            The autoposter will only stopped after the interval specified
+
+            This will return the autoposter asyncio task
+        """
+        self.keep_running = False
+        print("IBLPy: AutoPoster is stopping... Waiting for it to next wake up to post stats")
+        return self.task
 
 class Webhook():
     """
-        This is an IBLPy webhook. It takes a BotClient and your webhook secret. To start your webhook:
+        This is an IBLPy webhook. It takes a BotClient, your webhook secret and the awaitable/asyncio corouting to call after getting a vote. To start your webhook:
 
             Use start_ws_task if you are running this in discord.py. make sure you start the webhook in your on_ready event (at the very end of it since it's blocking)
 
@@ -188,27 +211,28 @@ class Webhook():
 
             Use create_app if you want to get the FastAPI ASGI app and deploy the webhook using your own server. Uvicorn still needs to be installed even if you use a different ASGI server
     """
-    def __init__(self, botcli: BotClient, secret: str = None):
+    def __init__(self, botcli: BotClient, coro: object, secret: str = None):
         if "webhook" not in api_modes:
             raise InvalidMode("fastapi")
         self.botcli = botcli
         self.secret = secret
+        self.coro = coro
 
-    def start_ws_task(self, route, func, port = 8012):
+    def start_ws_task(self, route, port = 8012):
         """
             Start webhook using asyncio.create_task (discord.py). Use this in a discord.py on_ready event (at the very end of it since it's blocking).
         """
-        asyncio.create_task(self.start_ws(route, port = port, func = func))
+        asyncio.create_task(self.start_ws(route, port = port))
 
-    def start_ws_normal(self, route, func, port = 8012):
+    def start_ws_normal(self, route, port = 8012):
         """
             Start webhook using asyncio.run for normal non-discord.py usecases
         """
-        asyncio.run(self.start_ws(route, port = port, func = func))
+        asyncio.run(self.start_ws(route, port = port))
 
-    def create_app(self, route, func):
+    def create_app(self, route):
         """Creates a FastAPI ASGI app and returns it so you can deploy it how you want to deploy it"""
-        ws.wh_func = func
+        ws.wh_func = self.coro
         ws.botcli = self.botcli
         ws.secret = self.secret
         app = fastapi.FastAPI(docs_url = None, redoc_url = None)
@@ -218,11 +242,11 @@ class Webhook():
         )
         return app
 
-    async def start_ws(self, route, func, port = 8012):
+    async def start_ws(self, route, port = 8012):
         """
             Coroutine to start webhook using any asyncio method you want.
         """
-        server = uvicorn.Server(uvicorn.Config(self.create_app(route, func), host = "0.0.0.0", port = port))
+        server = uvicorn.Server(uvicorn.Config(self.create_app(route), host = "0.0.0.0", port = port))
         await server.serve()
         try:
             os._exit()
