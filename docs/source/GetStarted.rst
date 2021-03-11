@@ -45,18 +45,18 @@ In order to setup autoposting, we need to create an AutoPoster inside our ``on_r
    ap = IBLPy.AutoPoster(interval = 300, botcli = ibl, discli = client, on_post = None, sharding = False)
    ap.start() # Starts the autoposter in the background
 
-If you run this right now, you will see that it does post stats every 5 minutes and also logs it. Log configuration ia upcoming and will use logging. It is not currently possible to stop a started AutoPoster. Submit a PR on GitHub if you want to add this. The interval must be in seconds and if it is below the 5 minutes or 300 seconds above, it will automatically be set to 5 minutes. This is to prevent ratelimits, which are strict on IBL
+If you run this right now, you will see that it does post stats every 5 minutes and also logs it. Log configuration ia upcoming and will use logging. You can use ``ap.stop()`` to stop an AutoPoster. The interval must be in seconds and if it is below the 5 minutes or 300 seconds above, it will automatically be set to 5 minutes. This is to prevent ratelimits, which are strict on IBL
 
 **Webhooks**
 
 Since webhooks are blocking, you must put it at the end of your ``on_ready`` function or nothing below it in ``on_ready`` will be executed. To setup webhooks, add something like the below code snippet to your ``on_ready`` function::
 
-   wh = IBLPy.Webhook(botcli = ibl, secret = "YOUR WEBHOOK SECRET")
-   wh.start_ws_task(route = "/ibl/webhook", func = get_vote, port = 8016)
+   wh = IBLPy.Webhook(botcli = ibl, secret = "YOUR WEBHOOK SECRET", coro = get_vote)
+   wh.start_ws_task(route = "/ibl/webhook", port = 8016)
 
 The webhook secret is the one you configured in IBL, use None if you don't want to use one (not recommended as this allows anyone to POST to your webhook freely including non-IBL users). IBLPy will check the webhook secret sent against what is givenand will return a 401 status code (and not call your vote function) is the secret is invalid thus allowing only IBL to POST to your webhook. 
 
-The route parameter below is what route to use for your webhook, func is the async coroutine to run when you get a vote and must be awaitable and must accept a vote parameter containing the vote and a secret parameter (which will be sent for extra verification)
+The route parameter below is what route to use for your webhook, coro is the async coroutine to run when you get a vote and must be awaitable and must accept a vote parameter containing the vote and a secret parameter (which will be sent for extra verification)
 
 The port parameter is the port the webhook should listen at (the below webhook is running at http://0.0.0.0:8016/ibl/webhook). You can now tunnel/reverse proxy this and add your webhook to IBL.
 

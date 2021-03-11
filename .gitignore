@@ -2,6 +2,7 @@ docs/build/*
 test/__pycache__
 dist
 build
+example/testcfg.py
 IBLPy/__pycache__
 IBLPy/__pycache__/*
 IBLPy/__pycache__/

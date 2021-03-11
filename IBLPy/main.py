@@ -140,7 +140,7 @@ class AutoPoster():
 
         :param discli: The discord.Client (or like interfaces like discord.Bot/discord.AutoShardedBot) of the bot you want to post stats for. If you wish to add shard counts, please give a discord.AutoShardedClient and pass sharding = True
 
-        :param on_post: The function to call after posting. Set to None if you don't want this. This function needs to accept two arguments, the guild count sent and the shard count set. Shard count will be None if sharding is disabled
+        :param on_post: The function to call after posting. Set to None if you don't want this. This function needs to accept three arguments, the guild count sent, the shard count set and the response (which will either be a IBLAPIResponse, a IBLAPIRatelimit or None). Shard count will be None if sharding is disabled
 
         :param sharding: Whether we should post sharding as well. Requires a discord.AutoShardedClient
     """
@@ -169,14 +169,14 @@ class AutoPoster():
 
             try:
                 if self.sharding in [False, None]:
-                    await self.botcli.set_stats_async(len(self.discli.guilds))
+                    res = await self.botcli.set_stats_async(len(self.discli.guilds))
                 else:
-                    await self.botcli.set_stats_async(len(self.discli.guilds), len(self.discli.shards))
+                    res = await self.botcli.set_stats_async(len(self.discli.guilds), len(self.discli.shards))
                 if self.on_post:
                     if self.sharding in [False, None]:
-                        await self.on_post(len(self.discli.guilds), None)
+                        await self.on_post(len(self.discli.guilds), None, res)
                     else:
-                        await self.on_post(len(self.discli.guilds), len(self.discli.shards))
+                        await self.on_post(len(self.discli.guilds), len(self.discli.shards), res)
                 print(f"IBLPy: Stats posted successfully at {time.time()}")
             except Exception as ex:
                 print(f"IBLPy: Could not post stats because: {ex}")
