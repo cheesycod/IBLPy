@@ -1,4 +1,5 @@
 import IBLPy, asyncio, discord
+from testcfg import TOKEN
 
 async def got_vote(vote, secret):
     print("Got vote:", vote, "with secret:", secret)
@@ -16,9 +17,9 @@ async def on_message(msg):
 @client.event
 async def on_ready():
     print(f"Ready! {client.user}")
-    a = IBLPy.Webhook(ibl, secret = "MY_SECRET")
-    ap = IBLPy.AutoPoster(5, ibl, client, on_post = test_poster)
+    a = IBLPy.Webhook(botcli = ibl, secret = "MY_SECRET")
+    ap = IBLPy.AutoPoster(interval = 300, botcli = ibl, discli = client, on_post = test_poster)
     ap.start()
-    a.start_ws_task("", func = got_vote)
+    a.start_ws_task(route = "/ibl", func = got_vote, port = 8016)
 
-client.run("NzMzNzY2NzYyNjU4NTI5MzYw.XxH7jA.y-6v7EXfequjeC0WjZKw3n2EeL8")
+client.run(TOKEN)
