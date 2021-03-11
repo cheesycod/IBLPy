@@ -10,10 +10,24 @@ try:
         raise StarletteHTTPException(status_code=code)
 
     class Vote(BaseModel):
+        """
+            Represents a IBL Vote
+
+            :param timeStamp: This is an internal field that is not present in the final Vote
+
+            :param userID: The User ID of the vote
+
+            :param botID: The Bot ID of the vote
+
+            :param type: The type of the vote
+
+            :param timestamp: The timestamp of the vote. Despite the typehint here, it wil always be a integer and will never be None
+        """
         timeStamp: str
         userID: str
         botID: str
         type: str
+        timestamp: Optional[int] = None
 
     @router.post("/")
     async def iblpy_webhook(vote: Vote, Authorization: str = Header("INVALID_SECRET")):
@@ -21,7 +35,8 @@ try:
             pass
         else:
             return abort(401)
-        vote.timeStamp = int(vote.timeStamp)
+        vote.timestamp = int(vote.timeStamp)
+        del vote.__dict__["timeStamp"]
         return await wh_func(vote, secret)
 
 except:

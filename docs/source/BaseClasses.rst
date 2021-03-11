@@ -45,3 +45,12 @@ Base Classes
    :show-inheritance:
    :members:
 
+**Votes**
+
+.. module:: IBLPy.ws
+
+.. autoclass:: Vote
+   :show-inheritance:
+   :members:
+   :exclude-members: __init__,__weakref__
+

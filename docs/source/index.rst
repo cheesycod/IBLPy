@@ -6,7 +6,7 @@ IBLPy Documentation
    :hidden:
    :glob:
 
-   GettingStarted
+   GetStarted
    MainClasses
    BaseClasses
 
