@@ -91,7 +91,7 @@ class UserClient():
 
         :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error
     """
-    def __init__(self, id: int, api_token: Optional[str] = "", error_on_ratelimit: bool = True):
+    def __init__(self, id: int, error_on_ratelimit: bool = True):
         self.id = id
         self.error_on_ratelimit = error_on_ratelimit
 
