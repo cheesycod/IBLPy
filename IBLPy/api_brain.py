@@ -10,7 +10,7 @@ except:
 
 user_agent = f"IBLPy/{cfg.version}"
 
-def set_stats_sync(api_token: str, bot_id: int, guild_count: int, error_on_ratelimit: bool, shard_count: Optional[int] = None):
+def set_stats_sync(api_token: str, bot_id: int, guild_count: int, error_on_ratelimit: bool, shard_count: Optional[int] = None, debug: bool = False):
     json = {"servers": guild_count}
     if shard_count is not None:
         json["shards"] = shard_count
@@ -32,10 +32,11 @@ def set_stats_sync(api_token: str, bot_id: int, guild_count: int, error_on_ratel
     else:
         success = False
         message = json.get("message")
-    
+    if debug:
+        print(f"DEBUG: {message}")
     return IBLAPIResponse(raw_res = res, success = success, data = json, message = message, status = res.status_code)
 
-async def set_stats_async(api_token: str, bot_id: int, guild_count: int, error_on_ratelimit: bool, shard_count: Optional[int] = None):
+async def set_stats_async(api_token: str, bot_id: int, guild_count: int, error_on_ratelimit: bool, shard_count: Optional[int] = None, debug: bool = False):
     json = {"servers": guild_count}
     if shard_count is not None:
         json["shards"] = shard_count
@@ -59,9 +60,11 @@ async def set_stats_async(api_token: str, bot_id: int, guild_count: int, error_o
     else:
         success = False
         message = json.get("message")
+    if debug:
+        print(f"DEBUG: {message}")
     return IBLAPIResponse(raw_res = res, success = success, data = json, message = message, status = res.status)
 
-def get_bot_sync(bot_id: int, error_on_ratelimit: bool):
+def get_bot_sync(bot_id: int, error_on_ratelimit: bool, debug: bool = False):
     headers = {"User-Agent": user_agent, "Content-Type": "application/json"}
     res = requests.get(f"{cfg.api}/bot/{bot_id}", headers = headers)
     # Workaround requests.json() sometimes giving string instead of dict due to IBL putting \\'s in API Responses and breaking Python JSON serialization
@@ -80,10 +83,12 @@ def get_bot_sync(bot_id: int, error_on_ratelimit: bool):
     if json.get("error"):
         return None
     del json["error"] # Delete the error
+    if debug:
+        print(f"DEBUG: {json}")
     json["id"] = bot_id
     return IBLBot(**json)
 
-async def get_bot_async(bot_id: int, error_on_ratelimit: bool):
+async def get_bot_async(bot_id: int, error_on_ratelimit: bool, debug: bool = False):
     headers = {"User-Agent": user_agent, "Content-Type": "application/json"}
     res = await requests_async.get(f"{cfg.api}/bot/{bot_id}", headers = headers)
     # Workaround requests.json() sometimes giving string instead of dict due to IBL putting \\'s in API Responses and breaking Python JSON serialization
@@ -101,11 +106,13 @@ async def get_bot_async(bot_id: int, error_on_ratelimit: bool):
         return IBLAPIResponse(raw_res = res, success = False, data = json, message = json.get("message"), status = res.status)
     if json.get("error"):
         return None
+    if debug:
+        print(f"DEBUG: {json}")
     del json["error"] # Delete the error
     json["id"] = bot_id
     return IBLBot(**json)
 
-def get_user_sync(user_id: int, error_on_ratelimit: bool):
+def get_user_sync(user_id: int, error_on_ratelimit: bool, debug: bool = False):
     headers = {"User-Agent": user_agent, "Content-Type": "application/json"}
     res = requests.get(f"{cfg.api}/user/{user_id}", headers = headers)
     # Workaround requests.json() sometimes giving string instead of dict due to IBL putting \\'s in API Responses and breaking Python JSON serialization
@@ -121,13 +128,15 @@ def get_user_sync(user_id: int, error_on_ratelimit: bool):
         raise IBLAPIRatelimit()
     if res.status_code == 429:
         return IBLAPIResponse(raw_res = res, success = False, data = json, message = json.get("message"), status = res.status_code)
+    if debug:
+        print(f"DEBUG: {json}")
     if json.get("error"):
         return None
     del json["error"] # Delete the error
     json["id"] = user_id
     return IBLUser(**json)
 
-async def get_user_async(user_id: int, error_on_ratelimit: bool):
+async def get_user_async(user_id: int, error_on_ratelimit: bool, debug: bool = False):
     headers = {"User-Agent": user_agent, "Content-Type": "application/json"}
     res = await requests_async.get(f"{cfg.api}/user/{user_id}", headers = headers)
     # Workaround requests.json() sometimes giving string instead of dict due to IBL putting \\'s in API Responses and breaking Python JSON serialization
@@ -145,6 +154,8 @@ async def get_user_async(user_id: int, error_on_ratelimit: bool):
         return IBLAPIResponse(raw_res = res, success = False, data = json, message = json.get("message"), status = res.status)
     if json.get("error"):
         return None
+    if debug:
+        print(f"DEBUG: {json}")
     del json["error"] # Delete the error
     json["id"] = user_id
     return IBLUser(**json)

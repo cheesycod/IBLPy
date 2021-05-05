@@ -15,13 +15,16 @@ class BotClient():
 
         :param api_token: The API Token of the bot. You can find this by clicking API Token under the "Owner Section". This is optional however you will not be able to post stats if you do not pass a API Token
 
-        :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error
+        :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error. Defaults to True
+
+        :param debug: Whether to run in debug mode or not. Defaults to False.
     """
 
-    def __init__(self, id: int, api_token: Optional[str] = "", error_on_ratelimit: bool = True):
+    def __init__(self, id: int, api_token: Optional[str] = "", error_on_ratelimit: bool = True, debug: bool = False):
         self.id = id
         self.api_token = api_token
         self.error_on_ratelimit = error_on_ratelimit
+        self.debug = debug
 
     async def set_stats_async(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
@@ -35,7 +38,7 @@ class BotClient():
             :rtype: IBLAPIResponse 
         """
         async_api()
-        return await api_brain.set_stats_async(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
+        return await api_brain.set_stats_async(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
     
     def set_stats(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
@@ -49,7 +52,7 @@ class BotClient():
             :rtype: IBLAPIResponse
         """
         sync_api()
-        return api_brain.set_stats_sync(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit)
+        return api_brain.set_stats_sync(bot_id = self.id, api_token = self.api_token, guild_count = guild_count, shard_count = shard_count, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
     
     def get_bot(self):
         """
@@ -65,7 +68,7 @@ class BotClient():
             :rtype: IBLBot
         """
         sync_api()
-        return api_brain.get_bot_sync(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+        return api_brain.get_bot_sync(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
 
     async def get_bot_async(self):
         """
@@ -81,7 +84,7 @@ class BotClient():
             :rtype: IBLBot
         """
         async_api()
-        return await api_brain.get_bot_async(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+        return await api_brain.get_bot_async(bot_id = self.id, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
 
 class UserClient():
     """
@@ -89,11 +92,14 @@ class UserClient():
             
         :param id: The User ID you wish to use with the IBL API
 
-        :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error
+        :param error_on_ratelimit: A boolean to indicate whether we should error with a IBLAPIRatelimit or simply return a IBLAPIResponse on a ratelimit error. Defaults to True
+    
+        :param debug: Whether to run in debug mode. Defaults to False.
     """
-    def __init__(self, id: int, error_on_ratelimit: bool = True):
+    def __init__(self, id: int, error_on_ratelimit: bool = True, debug: bool = False):
         self.id = id
         self.error_on_ratelimit = error_on_ratelimit
+        self.debug = debug
 
     def get_user(self):
         """
@@ -110,7 +116,7 @@ class UserClient():
 
         """
         sync_api()
-        return api_brain.get_user_sync(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+        return api_brain.get_user_sync(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
 
     async def get_user_async(self):
         """
@@ -126,7 +132,7 @@ class UserClient():
             :rtype: IBLUser
         """
         async_api()
-        return await api_brain.get_user_async(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit)
+        return await api_brain.get_user_async(user_id = self.id, error_on_ratelimit = self.error_on_ratelimit, debug = self.debug)
 
 class AutoPoster():
     """

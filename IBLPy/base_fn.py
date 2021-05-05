@@ -120,21 +120,10 @@ class IBLBot(IBLBaseUser):
         del self.__dict__["analytics"]
 
         # Handle links
-        self.website = self.links["website"]
-        if self.website.lower() == 'none':
-            self.website = None
-        self.donate = self.links["donate"]
-        if self.donate.lower() == 'none':
-            self.donate = None
-        self.support = self.links["support"]
-        if self.support.lower() == 'none':
-            self.support = None
-        self.github = self.links["github"]
-        if self.github.lower() == 'bone':
-            self.github = None
-        self.banner = self.links["banner"]
-        if self.banner.lower() == 'none':
-            self.banner = None
+        for key in self.links.keys():
+            self.__dict__[key] = self.links.get(key)
+            if self.__dict__[key] == "none":
+                self.__dict__[key] = None
         del self.__dict__["links"]
 
         # Handle tags
