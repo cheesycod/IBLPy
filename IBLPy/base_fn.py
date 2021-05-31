@@ -113,16 +113,16 @@ class IBLBot(IBLBaseUser):
         self.__dict__.update(kwargs)
 
         # Handle analytics
-        self.guild_count = self.analytics["servers"]
-        self.shard_count = self.analytics["shards"]
-        self.votes = self.analytics["votes"]
-        self.invites = self.analytics["invites"]
+        self.guild_count = int(self.analytics["servers"])
+        self.shard_count = int(self.analytics["shards"])
+        self.votes = int(self.analytics["votes"])
+        self.invites = int(self.analytics["invites"])
         del self.__dict__["analytics"]
 
         # Handle links
         for key in self.links.keys():
             self.__dict__[key] = self.links.get(key)
-            if self.__dict__[key] == "none":
+            if self.__dict__[key].lower() == "none":
                 self.__dict__[key] = None
         del self.__dict__["links"]
 

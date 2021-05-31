@@ -14,8 +14,10 @@ def set_stats_sync(api_token: str, bot_id: int, guild_count: int, error_on_ratel
     json = {"servers": guild_count}
     if shard_count is not None:
         json["shards"] = shard_count
-    headers = {"authorization": api_token, "User-Agent": user_agent, "Content-Type": "application/json"}
-    res = requests.post(f"{cfg.api}/bot/{bot_id}", headers = headers, json = json)
+    else:
+        json["shards"] = 0
+    headers = {"authorization": api_token, "User-Agent": user_agent}
+    res = requests.post(f"{cfg.api}/bot/{bot_id}", headers = headers, data = json)
     
     if res.status_code == 429 and error_on_ratelimit:
         raise IBLAPIRatelimit()
@@ -40,8 +42,10 @@ async def set_stats_async(api_token: str, bot_id: int, guild_count: int, error_o
     json = {"servers": guild_count}
     if shard_count is not None:
         json["shards"] = shard_count
-    headers = {"authorization": api_token, "User-Agent": user_agent, "Content-Type": "application/json"}
-    res = await requests_async.post(f"{cfg.api}/bot/{bot_id}", headers = headers, json = json)
+    else:
+        json["shards"] = 0
+    headers = {"authorization": api_token, "User-Agent": user_agent}
+    res = await requests_async.post(f"{cfg.api}/bot/{bot_id}", headers = headers, data = json)
     if res.status == 429 and error_on_ratelimit:
         raise IBLAPIRatelimit()
 
