@@ -26,15 +26,15 @@ class IBLAPIResponse():
 
         :param message: Any messages returned by the API in the message field. Can be None if there are no messages
 
-        :param data: The JSON object sent by the API
+        :param json: The JSON object sent by the API
 
         :param status: The status code of the HTTP response received from the API
     """
-    def __init__(self, *, raw_res: Union[requests.Response, aiohttp.ClientSession], success: bool, message: Optional[str], data: dict, status: int):
+    def __init__(self, *, raw_res: aiohttp.ClientSession, success: bool, message: Optional[str], json: dict, status: int):
         self.response = raw_res
         self.success = success
         self.message = message
-        self.data = data
+        self.json = json
         self.status = status
 
 class IBLBaseUser():
