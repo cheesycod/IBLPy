@@ -29,7 +29,7 @@ class BaseHTTP():
            
                 # Convert it to json
                 i = 0
-                json = await res.body()
+                json = await res.text()
                 while isinstance(json, (bytes, str)) and i < 100:
                     json = json_lib.loads(json)
                     i+=1
