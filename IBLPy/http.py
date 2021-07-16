@@ -90,7 +90,7 @@ class BotHTTP(BaseHTTP):
         except KeyError:
             pass
         
-        json["id"] = bot_id
+        json["id"] = self.bot_id
         return IBLBot(**json)
 
 
