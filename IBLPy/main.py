@@ -117,12 +117,12 @@ class AutoPoster():
     """
     def __init__(
         self, 
-        get_counts: Awaitable = _default_get_counts,
         interval: int,
         botcli: BotClient, 
         discli: discord.Client, 
         sharding = None, 
-        on_post = None
+        on_post = None,
+        get_counts: Awaitable = _default_get_counts,
     ):
 
         if interval > 300:
