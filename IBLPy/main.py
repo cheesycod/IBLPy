@@ -81,7 +81,7 @@ class UserClient():
         return await self.http.get_user()
 
 
-async def _default_get_count(ap):
+async def _default_get_counts(ap):
     """Returns guild and shard count for default autoposter"""
     return {
         "guild_count": len(ap.discli.guilds),
