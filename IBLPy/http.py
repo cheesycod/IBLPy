@@ -55,6 +55,7 @@ class BotHTTP(BaseHTTP):
         
         
     async def set_stats(
+        self,
         guild_count: int, 
         shard_count: Optional[int] = 0
     ):
