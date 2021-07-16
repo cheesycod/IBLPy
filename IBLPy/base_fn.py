@@ -161,17 +161,3 @@ class IBLUser(IBLBaseUser):
         if self.website.lower() == 'none':
             self.website = None
         del self.__dict__["links"]
-
-
-def async_api():
-    if "async" not in api_modes:
-        raise InvalidMode("async")
-
-def sync_api():
-    if "sync" not in api_modes:
-        raise InvalidMode("sync")
-
-def bot_only(user):
-    if user != "bot": 
-        raise IBLInvalidEndpoint("bot", user)
-
