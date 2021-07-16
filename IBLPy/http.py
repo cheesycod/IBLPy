@@ -1,5 +1,5 @@
 import IBLPy.config as cfg
-from IBLPy.base_fn import async_api, sync_api, IBLAPIResponse, IBLAPIRatelimit, IBLBot, IBLUser
+from IBLPy.base_fn import IBLAPIResponse, IBLAPIRatelimit, IBLBot, IBLUser
 import aiohttp
 from typing import Optional
 from loguru import logger
