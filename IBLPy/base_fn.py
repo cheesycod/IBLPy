@@ -1,20 +1,13 @@
 import IBLPy.config as cfg
-from IBLPy import api_modes, requests, aiohttp
+from IBLPy import api_modes, aiohttp
 import json
 from typing import Union, Optional
-
-class NoSuitableModesFound(Exception):
-    """Raised when neither requests, aiohttp_requests or fastapi+uvicorn was found"""
-    def __init__(self):
-        super().__init__("In order to use IBLPy, you must have either requests (sync) or aiohttp_requests (async) installed")
 
 class InvalidMode(Exception):
     """Raised when you don't have the required mode (package) to perform the action such as trying to do an asynchronous API request without having aiohttp_requests installed or trying to do a webhook without fastapi+uvicorn"""
     def __init__(self, mode):
         if mode == "async":
             super().__init__("In order to use IBLPy asynchronous API requests, you must have aiohttp_requests installed")
-        elif mode == "sync":
-            super().__init__("In order to use IBLPy synchronous API requests, you must have requests installed")
         elif mode == "fastapi":
             super().__init__("In order to use IBLPy webhooks, you must have fastapi and uvicorn installed")
 
