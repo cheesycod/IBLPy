@@ -13,6 +13,7 @@ class BaseHTTP():
     user_agent = f"IBLPy/{cfg.version}"       
     
     async def _request(self, method, endpoint, json, headers, auth = None):
+        """Makes a API request"""
         if auth:
             headers["authorization"] = auth
         
@@ -46,6 +47,7 @@ class BotHTTP(BaseHTTP):
         self.logged_in = False 
 
     def login(self, api_token):
+        """Logs in to the IBL API"""
         self.api_token = api_token
         self.logged_in = True
         
