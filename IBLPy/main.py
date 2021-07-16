@@ -1,7 +1,7 @@
 import IBLPy.config as cfg
 import IBLPy.http as _http
 from IBLPy.base_fn import InvalidMode, IBLAPIResponse
-from IBLPy import api_modes, fastapi, uvicorn, ws, autoposter, discord
+from IBLPy import api_modes, fastapi, uvicorn, ws, discord
 from loguru import logger
 from typing import Optional, Awaitable
 import os
