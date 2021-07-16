@@ -14,6 +14,8 @@ class BaseHTTP():
     
     async def _request(self, method, endpoint, json, headers, auth = None):
         """Makes a API request"""
+        headers = {} if not headers else headers
+        
         if auth:
             headers["authorization"] = auth
         
