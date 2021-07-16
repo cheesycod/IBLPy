@@ -21,13 +21,13 @@ class IBLHTTP():
         self.logged_in = True
         
     
-    async def _request(self, method, url, json, headers, auth = None):
+    async def _request(self, method, endpoint, json, headers, auth = None):
         if auth:
             headers["authorization"] = auth
             
         async with aiohttp.ClientSession() as sess:
             f = getattr(sess, method.lower())
-            async with f(url, headers = headers, json = json) as res:
+            async with f(f"{cfg.api_url}{endpoint}", headers = headers, json = json) as res:
                 if res.status == 429:
                     raise IBLAPIRatelimit()
            
@@ -54,7 +54,7 @@ class IBLHTTP():
         
         json = {"servers": guild_count, "shards": shard_count}
         headers = {"authorization": self.api_token, "User-Agent": user_agent}
-        return await self._request("POST",
+        return await self._request("POST", f"/api/
 
     
 async def get_bot(bot_id: int):
