@@ -1,6 +1,5 @@
 import IBLPy.config as cfg
 from IBLPy import api_modes, aiohttp
-import json
 from typing import Union, Optional
 
 class InvalidMode(Exception):
@@ -42,8 +41,8 @@ class IBLBaseUser():
         This is a base user on IBL from which all bots and users extend from
     """
     def __init__(self):
-        pass
-
+        raise NotImplementedError("You must define your own __init__ method!")
+    
     def dict(self) -> dict:
         """Returns the class as a dict using the dict dunder property of the class"""
         return self.__dict__
@@ -102,9 +101,11 @@ class IBLBot(IBLBaseUser):
 
         :param support: The bots support server. The API puts this in a links JSON object, but for simplicity, we provide this as just support. This will be a string or None (if not found)
     """
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    def __init__(self, bot_id, json):
+        self.__dict__.update(**json)
 
+        self.id = bot_id
+        
         # Handle analytics
         self.guild_count = int(self.analytics["servers"])
         self.shard_count = int(self.analytics["shards"])
@@ -125,7 +126,8 @@ class IBLBot(IBLBaseUser):
         # Handle name -> username convert
         self.username = self.name
         del self.__dict__["name"]
-
+        
+        
 class IBLUser(IBLBaseUser):
     """
         IBLUser is internally a part of the base_fn module (which provides all of IBLPy's base classes and functions). It represents a user on IBL. The exact parameters of an IBLUser may change and IBLPy is designed to handle such changes automatically. Here are the parameters that we know of right now:
@@ -146,7 +148,7 @@ class IBLUser(IBLBaseUser):
 
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
-    def __init__(self, **kwargs):
+    def __init__(self, user_id, json):
         self.__dict__.update(kwargs)
         if self.nickname.lower() == 'none':
             self.nickname = None
