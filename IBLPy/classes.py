@@ -23,6 +23,8 @@ class IBLAPIResponse():
             This will be a aiohttp ClientResponse
 
         :param success: Whether the API response has succeeded or not (status less than 400)
+        
+        :param error_msg: The error message reported by the Infinity Bot List API
 
         :param message: Any messages returned by the API in the message field. Can be None if there are no messages
 
@@ -34,6 +36,7 @@ class IBLAPIResponse():
         self.res = res
         self.success = True if res.status < 400 else False
         self.message = json.get(message)
+        self.error_msg = json.get("error")
         self.json = json
         self.status = res.status
 
