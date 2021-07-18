@@ -15,7 +15,7 @@ class BotClient():
         :param id: The Bot ID you wish to use with the IBL API
 
         :param api_token: The API Token of the bot. You can find this by clicking API Token under the "Owner Section". 
-        This is optional however you will not be able to post stats if you do not pass a API Token
+            This is optional however you will not be able to post stats if you do not pass a API Token
     """
 
     def __init__(self, bot_id: int, api_token: Optional[str] = ""):
@@ -92,27 +92,27 @@ async def _default_get_counts(ap):
 class AutoPoster():
     """
         This is IBL Auto Poster. It will post stats for you on an interval you decide
-        and it will then run a function of your choice (if requested) after posting each time.
+            and it will then run a function of your choice (if requested) after posting each time.
 
         You can stop a Auto Poster by calling the ``stop`` function.
         
         :param get_counts: A async function that takes in the AutoPoster object and then
-        returns the dict {"guild_count: guild count, "shard_count": shard_count} for the autoposter.
-        A default value for this is provided for ease of use
+            returns the dict {"guild_count: guild count, "shard_count": shard_count} for the autoposter.
+            A default value for this is provided for ease of use
 
         :param interval: How long to wait each time you post. It is required to use at least 5 minutes which is 300 seconds.
-        Specifying a value below 300 seconds will set the interval to 300 seconds anyways
+            Specifying a value below 300 seconds will set the interval to 300 seconds anyways
 
         :param botcli: The IBL BotClient of the bot you want to post stats for. 
-        It must have the API token set either during initialization or afterwards by setting the api_token parameter
+            It must have the API token set either during initialization or afterwards by setting the api_token parameter
 
         :param discli: The discord.Client (or like interfaces like discord.Bot/discord.AutoShardedBot) of the bot you want to post stats for.
-        If you wish to add shard counts, please give a discord.AutoShardedClient and pass sharding = True or use get_counts
+            If you wish to add shard counts, please give a discord.AutoShardedClient and pass sharding = True or use get_counts
 
         :param on_post: The function to call after posting. Set to None if you don't want this.
-        This function needs to accept three arguments, the guild count sent, the shard count set 
-        and the response (which will either be a IBLAPIResponse, a IBLAPIRatelimit or None). 
-        Shard count will be None if sharding is disabled and/or get_count provided doesn't support it
+            This function needs to accept three arguments, the guild count sent, the shard count set 
+            and the response (which will either be a IBLAPIResponse, a IBLAPIRatelimit or None). 
+            Shard count will be None if sharding is disabled and/or get_count provided doesn't support it
 
         :param sharding: Whether we should post sharding as well. Requires a discord.AutoShardedClient
     """
