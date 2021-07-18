@@ -80,12 +80,10 @@ class BotHTTP(BaseHTTP):
             endpoint=f"/bot/{self.id}",
         )
         
-        json = api_res.json
-        
-        if json.get("error"):
+        if api_res.success:
             return api_res
         
-        return IBLBot(self.id, json)
+        return IBLBot(self.id, api_res.json)
 
     
 class UserHTTP(BaseHTTP):         
@@ -95,10 +93,8 @@ class UserHTTP(BaseHTTP):
             endpoint=f"{cfg.api}/user/{self.id}", 
         )
     
-        json = api_res.json
-        
-        if json.get("error"):
+        if api_res.success:
             return api_res
     
-        return IBLUser(self.id, json)
+        return IBLUser(self.id, api_res.json)
 
