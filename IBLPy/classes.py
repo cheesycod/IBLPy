@@ -43,6 +43,7 @@ class IBLBaseUser():
     def __init__(self, id, json):
         self.__dict__.update(**json)
         self.id = id
+        self.clean()
     
     def dict(self) -> dict:
         """Returns the class as a dict using the dict dunder property of the class"""
@@ -55,6 +56,25 @@ class IBLBaseUser():
     def __int__(self) -> int:
         """Returns the bot or user ID"""
         return self.id
+    
+    def clean(self, attr: Optional[str] = None):
+        if not attr:
+            for k, v in self.__dict__.items():
+                self.__dict__[k] = self.clean(self, attr=v)
+                
+        if isinstance(attr, str):
+            if attr == "none":
+                return None
+            elif attr == "false":
+                return False
+            elif attr == "true":
+                return True
+        
+        elif isinstance(attr, dict):
+            _tmp = {}
+            for k, v in attr.items():
+                _tmp[k] = self.clean(self, attr=v)
+            return _tmp
 
 class IBLBot(IBLBaseUser):
     """
@@ -111,12 +131,6 @@ class IBLBot(IBLBaseUser):
         self.votes = int(self.analytics["votes"])
         self.invites = int(self.analytics["invites"])
         del self.__dict__["analytics"]
-
-        # Handle links
-        for key in self.links.keys():
-            self.__dict__[key] = self.links.get(key)
-            if self.__dict__[key].lower() == "none":
-                self.__dict__[key] = None
         del self.__dict__["links"]
 
         # Handle tags
@@ -148,13 +162,5 @@ class IBLUser(IBLBaseUser):
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
     def __init__(self, id, json):
-        super().__init__(id, json)
- 
-        if self.nickname.lower() == 'none':
-            self.nickname = None
-        
-        for key in self.__dict__["links"].keys():
-            if self.__dict__["links"][key].lower() == "none":
-                self.__dict__["links"][key] = None
-        
+        super().__init__(id, json)     
         del self.__dict__["links"]
