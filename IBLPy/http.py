@@ -52,13 +52,10 @@ class BaseHTTP():
                 while isinstance(json, (bytes, str)) and i < 100:
                     json = json_lib.loads(json)
                     i+=1
-                
-                success = True if res.status == 200 else False           
-                message = json.get("message")
             
                 logger.debug(str(json))
             
-                return IBLAPIResponse(raw_res = res, success = success, json = json, message = message, status = res.status)
+                return IBLAPIResponse(raw_res = res, json = json, status = res.status)
      
     
 class BotHTTP(BaseHTTP):    
