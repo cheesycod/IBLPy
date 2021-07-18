@@ -17,7 +17,10 @@ try:
     import discord
     api_modes.append("autoposter")
 except Exception:
-    discord = None
+    class StubDiscord:
+        Client = None
+        
+    discord = StubDiscord
 
 from IBLPy.main import *
 from IBLPy.config import *
