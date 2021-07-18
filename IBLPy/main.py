@@ -150,7 +150,13 @@ class AutoPoster():
                 self.interval = 300
 
             try:
-                counts = await self.get_counts(self)
+                
+                try:
+                    counts = await self.get_counts(self)
+                except Exception as exc:
+                    logger.warning("Using self in get_counts did not work, trying no args...")
+                    counts = await self.get_counts()
+                    
                 res = await self.botcli.set_stats(counts["guild_count"], counts["shard_count"])
                 if self.on_post:
                     await self.on_post(counts["guild_count"], counts["shard_count"], res)
