@@ -3,3 +3,4 @@ furo
 sphinx-autodoc-typehints
 orjson
 git+https://github.com/cheesycod/IBLPy
+discord
