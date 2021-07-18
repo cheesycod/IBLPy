@@ -19,7 +19,7 @@ try:
 except Exception:
     discord = None
 
-from IBLPy.base_fn import *
+from IBLPy.classes import *
 from IBLPy.main import *
 from IBLPy.config import *
 from IBLPy.ws import *
