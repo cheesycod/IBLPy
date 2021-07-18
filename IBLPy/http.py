@@ -55,7 +55,7 @@ class BaseHTTP():
             
                 logger.debug(str(json))
             
-                return IBLAPIResponse(raw_res = res, json = json, status = res.status)
+                return IBLAPIResponse(res = res, json = json)
      
     
 class BotHTTP(BaseHTTP):    
