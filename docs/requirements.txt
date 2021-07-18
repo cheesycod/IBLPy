@@ -5,3 +5,5 @@ orjson
 git+https://github.com/cheesycod/IBLPy
 discord 
 aiohttp
+fastapi
+pydantic
