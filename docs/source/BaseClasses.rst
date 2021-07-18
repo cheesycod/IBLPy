@@ -33,10 +33,6 @@ Base Classes
 
 **Exceptions**
 
-.. autoclass:: NoSuitableModesFound
-   :show-inheritance:
-   :members:
-
 .. autoclass:: InvalidMode
    :show-inheritance:
    :members:
