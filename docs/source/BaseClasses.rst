@@ -1,7 +1,7 @@
 Base Classes
 ============
 
-.. module:: IBLPy.base_fn
+.. module:: IBLPy.classes
 
 .. autoclass:: IBLBaseUser
    :inherited-members:
