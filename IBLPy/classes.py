@@ -57,11 +57,12 @@ class IBLBaseUser():
         """Returns the bot or user ID"""
         return self.id
     
-    def clean(self, attr: Optional[str] = None):
-        if not attr:
-            for k, v in self.__dict__.items():
-                self.__dict__[k] = self.clean(self, attr=v)
-                
+    def clean(self):
+        """Cleans up all the ugly stuff from the IBL API"""
+        for k, v in self.__dict__.items():
+            self.__dict__[k] = self._cleaner(attr=v)
+    
+    def _cleaner(self, attr: str):
         if isinstance(attr, str):
             if attr == "none":
                 return None
@@ -69,13 +70,17 @@ class IBLBaseUser():
                 return False
             elif attr == "true":
                 return True
+            elif attr.isdigit():
+                return int(attr)
         
         elif isinstance(attr, dict):
             _tmp = {}
             for k, v in attr.items():
-                _tmp[k] = self.clean(self, attr=v)
+                _tmp[k] = self._cleaner(attr=v)
             return _tmp
-
+        
+        return attr
+    
 class IBLBot(IBLBaseUser):
     """
         IBLBot is internally a part of the base_fn module (which provides all of IBLPy's base classes and functions). It represents a bot on IBL. The exact parameters of an IBLBot may change and IBLPy is designed to handle such changes automatically. Here are the parameters that we know of right now:
@@ -126,10 +131,10 @@ class IBLBot(IBLBaseUser):
         super().__init__(id, json)
         
         # Handle analytics
-        self.guild_count = int(self.analytics["servers"])
-        self.shard_count = int(self.analytics["shards"])
-        self.votes = int(self.analytics["votes"])
-        self.invites = int(self.analytics["invites"])
+        self.guild_count = self.analytics["servers"]
+        self.shard_count = self.analytics["shards"]
+        self.votes = self.analytics["votes"]
+        self.invites = self.analytics["invites"]
         del self.__dict__["analytics"]
         del self.__dict__["links"]
 
