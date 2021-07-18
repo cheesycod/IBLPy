@@ -13,14 +13,7 @@ except:
     uvicorn = None
     fastapi = None
 
-try:
-    import discord
-    api_modes.append("autoposter")
-except Exception:
-    class StubDiscord:
-        Client = None
-        
-    discord = StubDiscord
+import discord
 
 from IBLPy.main import *
 from IBLPy.config import *
