@@ -89,12 +89,8 @@ class BotHTTP(BaseHTTP):
             return api_res
     
         logger.debug(str(json))
-        try:
-            del json["error"] # Delete the error
-        except KeyError:
-            pass
         
-        return IBLBot(bot_id, json)
+        return IBLBot(self.bot_id, json)
 
 
     
