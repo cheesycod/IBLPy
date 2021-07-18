@@ -29,9 +29,7 @@ In most cases, you will want to use autoposting to do this, but you `can` do it 
 
    ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
 
-   res = ibl.set_stats(guild_count = guild_count_here, shard_count = shard_count_here) # Synchronous
-   ## OR ##
-   res = await ibl.set_stats_async(guild_count = guild_count_here, shard_count = shard_count_here) # Asynchronous, needs to be in an async function
+   res = await ibl.set_stats(guild_count = guild_count_here, shard_count = shard_count_here) # Asynchronous, needs to be in an async function
    
    if res.success:
         print("Success")
@@ -68,8 +66,6 @@ IBLPy makes it easy to get a bot from the API and parses it for you in a easy to
 
    ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
    
-   bot = ibl.get_bot() # Synchronous
-   ## OR ##
-   bot = await ibl.get_bot_async() # Asynchronous, needs to be in an async function
+   bot = await ibl.get_bot() # Asynchronous, needs to be in an async function
 
    print(str(bot))
