@@ -1,6 +1,6 @@
 import IBLPy.config as cfg
 import IBLPy.http as _http
-from IBLPy.base_fn import InvalidMode, IBLAPIResponse
+from IBLPy.classes import InvalidMode, IBLAPIResponse
 from IBLPy import api_modes, fastapi, uvicorn, ws, discord
 from loguru import logger
 from typing import Optional, Awaitable
@@ -25,6 +25,7 @@ class BotClient():
         if api_token:
             self.http.login(api_token)
 
+            
     async def set_stats(self, guild_count: int, shard_count: Optional[int] = None) -> IBLAPIResponse:
         """
             Posts bot stats to the IBL API asynchronously
