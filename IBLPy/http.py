@@ -57,10 +57,13 @@ class BotHTTP(BaseHTTP):
     async def set_stats(
         self,
         guild_count: int, 
-        shard_count: Optional[int] = 0
+        shard_count: Optional[int] = None
     ):
         if not self.logged_in:
             raise ValueError("Not logged in to IBL yet")
+        
+        # Fix a IBL API bug
+        shard_count = shard_count if shard_count else "0"
         
         json = {"servers": guild_count, "shards": shard_count}
         return await self._request(
@@ -91,8 +94,7 @@ class BotHTTP(BaseHTTP):
         except KeyError:
             pass
         
-        json["id"] = self.bot_id
-        return IBLBot(**json)
+        return IBLBot(bot_id, json)
 
 
     
