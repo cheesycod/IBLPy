@@ -40,8 +40,9 @@ class IBLBaseUser():
     """
         This is a base user on IBL from which all bots and users extend from
     """
-    def __init__(self):
-        raise NotImplementedError("You must define your own __init__ method!")
+    def __init__(self, id, json):
+        self.__dict__.update(**json)
+        self.id = id
     
     def dict(self) -> dict:
         """Returns the class as a dict using the dict dunder property of the class"""
@@ -101,10 +102,8 @@ class IBLBot(IBLBaseUser):
 
         :param support: The bots support server. The API puts this in a links JSON object, but for simplicity, we provide this as just support. This will be a string or None (if not found)
     """
-    def __init__(self, bot_id, json):
-        self.__dict__.update(**json)
-
-        self.id = bot_id
+    def __init__(self, id, json):
+        super().__init__(id, json)
         
         # Handle analytics
         self.guild_count = int(self.analytics["servers"])
@@ -148,11 +147,14 @@ class IBLUser(IBLBaseUser):
 
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
-    def __init__(self, user_id, json):
-        self.__dict__.update(kwargs)
+    def __init__(self, id, json):
+        super().__init__(id, json)
+ 
         if self.nickname.lower() == 'none':
             self.nickname = None
-        self.website = self.links["website"]
-        if self.website.lower() == 'none':
-            self.website = None
+        
+        for key in self.__dict__["links"].keys():
+            if self.__dict__["links"][key].lower() == "none":
+                self.__dict__["links"][key] = None
+        
         del self.__dict__["links"]
