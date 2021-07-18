@@ -29,12 +29,12 @@ class IBLAPIResponse():
 
         :param status: The status code of the HTTP response received from the API
     """
-    def __init__(self, *, raw_res: aiohttp.ClientSession, success: bool, message: Optional[str], json: dict, status: int):
+    def __init__(self, *, raw_res: aiohttp.ClientResponse, json: dict):
         self.response = raw_res
-        self.success = success
-        self.message = message
+        self.success = True if raw_res.status < 400 else False
+        self.message = json.get(message)
         self.json = json
-        self.status = status
+        self.status = raw_res.status
 
 class IBLBaseUser():
     """
