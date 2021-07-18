@@ -22,7 +22,7 @@ copyright = 'Infinity Bot List. Made By Rootspring'
 author = 'Rootspring'
 
 # The full version, including alpha/beta/rc tags
-release = '1.7.0'
+release = '2.0.0a0'
 
 
 # -- General configuration ---------------------------------------------------
