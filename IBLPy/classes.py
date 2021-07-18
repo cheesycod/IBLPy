@@ -19,9 +19,10 @@ class IBLAPIResponse():
     """
         IBLAPIResponse represents an API response in the IBLPy library
         
-        :param raw_res: This is the raw response from the API. This will either be a requests Response (sync API functions) or a aiohttp ClientSession (async API functions)
+        :param res: This is the raw response from the API. 
+            This will be a aiohttp ClientResponse
 
-        :param success: Whether the API response has succeeded or not.
+        :param success: Whether the API response has succeeded or not (status less than 400)
 
         :param message: Any messages returned by the API in the message field. Can be None if there are no messages
 
@@ -29,12 +30,12 @@ class IBLAPIResponse():
 
         :param status: The status code of the HTTP response received from the API
     """
-    def __init__(self, *, raw_res: aiohttp.ClientResponse, json: dict):
-        self.response = raw_res
-        self.success = True if raw_res.status < 400 else False
+    def __init__(self, *, res: aiohttp.ClientResponse, json: dict):
+        self.res = res
+        self.success = True if res.status < 400 else False
         self.message = json.get(message)
         self.json = json
-        self.status = raw_res.status
+        self.status = res.status
 
 class IBLBaseUser():
     """
