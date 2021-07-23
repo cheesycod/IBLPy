@@ -172,4 +172,3 @@ class IBLUser(IBLBaseUser):
     """
     def __init__(self, id, json):
         super().__init__(id, json)     
-        del self.__dict__["links"]
