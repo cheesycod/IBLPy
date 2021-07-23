@@ -88,7 +88,7 @@ class BotHTTP(BaseHTTP):
     
 class UserHTTP(BaseHTTP):         
     async def get_user(self, debug: bool = False):
-        res = await self.request(
+        api_res = await self.request(
             method="GET",
             endpoint=f"/user/{self.id}", 
         )
