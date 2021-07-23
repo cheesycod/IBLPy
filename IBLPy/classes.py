@@ -35,8 +35,8 @@ class IBLAPIResponse():
     def __init__(self, *, res: aiohttp.ClientResponse, json: dict):
         self.res = res
         self.success = True if res.status < 400 else False
-        self.message = json.get(message)
-        self.error_msg = json.get("error")
+        self.message = json.get("message")
+        self.error = json.get("error")
         self.json = json
         self.status = res.status
 
