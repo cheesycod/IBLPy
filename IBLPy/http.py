@@ -90,7 +90,7 @@ class UserHTTP(BaseHTTP):
     async def get_user(self, debug: bool = False):
         res = await self.request(
             method="GET",
-            endpoint=f"{cfg.api}/user/{self.id}", 
+            endpoint=f"/user/{self.id}", 
         )
     
         if api_res.success:
