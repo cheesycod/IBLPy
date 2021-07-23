@@ -61,9 +61,8 @@ class UserClient():
             
         :param user_id: The User ID you wish to use with the IBL API
     """
-    def __init__(self, bot_id: int):
-        raise ValueError("Not yet done")
-        self.bot_id = bot_id
+    def __init__(self, user_id: int):
+        self.user_id = user_id
         self.http = _http.UserHTTP(user_id)
 
     async def get_user(self):
