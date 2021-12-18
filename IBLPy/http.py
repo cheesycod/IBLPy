@@ -75,9 +75,9 @@ class BotHTTP(BaseHTTP):
         )
    
     async def get_bot(self):
-        api_res = await self._request(
+        api_res = await self.request(
             method="GET",
-            endpoint=f"/bot/{self.id}",
+            endpoint=f"/bots/{self.id}",
         )
         
         if not api_res.success:

@@ -55,7 +55,10 @@ class IBLBaseUser():
 
     def __str__(self) -> str:
         """Returns the name of the bot or user"""
-        return self.name
+        try:
+            return self.username
+        except AttributeError:
+            return str(self.dict())
 
     def __int__(self) -> int:
         """Returns the bot or user ID"""
@@ -68,11 +71,11 @@ class IBLBaseUser():
     
     def _cleaner(self, attr: str):
         if isinstance(attr, str):
-            if attr == "none":
+            if attr.lower() == "none":
                 return None
-            elif attr == "false":
+            elif attr.lower() == "false":
                 return False
-            elif attr == "true":
+            elif attr.lower() == "true":
                 return True
             elif attr.isdigit():
                 return int(attr)

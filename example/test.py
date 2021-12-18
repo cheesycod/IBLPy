@@ -8,7 +8,7 @@ async def test_poster(gc, sc, res):
     print(gc, sc, res)
 
 ibl = IBLPy.BotClient(
-    bot_id = 733766762658529360,
+    bot_id = 733043768692965448,
     api_token="ySnVkMTSl4bjVJdHxy3nQnj2t2IQmKuuZUdojBCvkseyfQKuqjgS5x1idSKgUS3nLcgwtqHX8KEEe1VHuAbbw7U55VdQfrFs9hYy"
 )
 client = discord.AutoShardedClient()
@@ -20,7 +20,8 @@ async def on_message(msg):
 @client.event
 async def on_ready():
     print(f"Ready! {client.user}")
-    #ibl.get_bot()
+    r = await ibl.get_bot()
+    print(r)
     a = IBLPy.Webhook(botcli = ibl, secret = "MY_SECRET", coro = got_vote)
     ap = IBLPy.AutoPoster(interval = 300, botcli = ibl, discli = client, on_post = test_poster, sharding = True)
     ap.start()
