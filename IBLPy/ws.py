@@ -15,9 +15,11 @@ try:
         """
         timeStamp: str
         userID: str
+        userName: str
         botID: str
         type: str
-        timestamp: Optional[int] = None
+        count: int = 0
+
 
     class Vote():
         """
@@ -27,11 +29,15 @@ try:
 
             :param user_id: The ID of the user who voted for your bot. In test mode, this will be 0
 
+            :param username: The username who voted for your bot
+
+            :param count: The amount of votes your bot now has
+
             :param test: Whether this is a test webhook or not
 
             :param timestamp: The timestamp (epoch) when the vote happened
         """
-        def __init__(self, bot_id: int, user_id: int, test: bool, timestamp: int):
+        def __init__(self, bot_id: int, user_id: int, test: bool, timestamp: int, count: int, username: str):
             self.bot_id = bot_id
             self.user_id = user_id
             self.test = test
@@ -53,7 +59,7 @@ try:
             bot_id = int(vote_internal.botID)
             user_id = int(vote_internal.userID)
             test = False
-        vote = Vote(bot_id = bot_id, user_id = user_id, test = test, timestamp = timestamp)
+        vote = Vote(bot_id = bot_id, user_id = user_id, test = test, timestamp = timestamp, count = vote_internal.count, username = vote_internal.userName)
         return await wh_func(vote, secret)
 
 except:

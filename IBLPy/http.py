@@ -66,7 +66,7 @@ class BotHTTP(BaseHTTP):
     ):        
         return await self.request(
             method="POST",
-            endpoint=f"/bot/{self.id}",
+            endpoint="/bots/stats",
             json={
                 "servers": guild_count,
                 "shards": shard_count if shard_count else "0" # IBL API workaroud

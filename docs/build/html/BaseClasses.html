@@ -385,7 +385,7 @@ This will be a aiohttp ClientResponse</p></li>
 <p><strong>Votes</strong></p>
 <span class="target" id="module-IBLPy.ws"></span><dl class="py class">
 <dt class="sig sig-object py" id="IBLPy.ws.Vote">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">IBLPy.ws.</span></span><span class="sig-name descname"><span class="pre">Vote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bot_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#IBLPy.ws.Vote" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">IBLPy.ws.</span></span><span class="sig-name descname"><span class="pre">Vote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bot_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#IBLPy.ws.Vote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents a vote on IBL</p>
 <dl class="field-list simple">
@@ -393,6 +393,8 @@ This will be a aiohttp ClientResponse</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bot_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The Bot ID of the vote</p></li>
 <li><p><strong>user_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The ID of the user who voted for your bot. In test mode, this will be 0</p></li>
+<li><p><strong>username</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The username who voted for your bot</p></li>
+<li><p><strong>count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The amount of votes your bot now has</p></li>
 <li><p><strong>test</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether this is a test webhook or not</p></li>
 <li><p><strong>timestamp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The timestamp (epoch) when the vote happened</p></li>
 </ul>

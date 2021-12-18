@@ -7,7 +7,10 @@ async def got_vote(vote, secret):
 async def test_poster(gc, sc, res):
     print(gc, sc, res)
 
-ibl = IBLPy.BotClient(id = 733766762658529360, api_token = "mG4qsvkpF89g3vXdlipDK44DGAXFEcvPlA2iSpwGd9Azt2l2XDh3CmPIzKmeXcmHznMntMC3ghKmmKWQ5iQuhpyYPzSI2XSvm1kZ")
+ibl = IBLPy.BotClient(
+    bot_id = 733766762658529360,
+    api_token="ySnVkMTSl4bjVJdHxy3nQnj2t2IQmKuuZUdojBCvkseyfQKuqjgS5x1idSKgUS3nLcgwtqHX8KEEe1VHuAbbw7U55VdQfrFs9hYy"
+)
 client = discord.AutoShardedClient()
 
 @client.event
