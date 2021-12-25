@@ -90,7 +90,9 @@ class IBLBaseUser():
     
 class IBLBot(IBLBaseUser):
     """
-        IBLBot is internally a part of the base_fn module (which provides all of IBLPy's base classes and functions). It represents a bot on IBL. The exact parameters of an IBLBot may change and IBLPy is designed to handle such changes automatically. Here are the parameters that we know of right now:
+        IBLBot is internally a part of the base_fn module (which provides all of IBLPy's base classes and functions). 
+        It represents a bot on IBL. The exact parameters of an IBLBot may change and IBLPy is designed to handle such changes automatically. 
+        Here are the parameters that we know of right now:
 
         :param id: The id of the bot. This will be a integer
 
@@ -116,9 +118,9 @@ class IBLBot(IBLBaseUser):
 
         :param certified: Whether the bot is certified or not. This will be a boolean
 
-        :param guild_count: The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just guild_count. This will be a integer
+        :param servers: The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just guild_count. This will be a integer
 
-        :param shard_count: The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just shard_count. This will be a integer
+        :param shards: The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just shard_count. This will be a integer
 
         :param votes: The amount of votes the bot has. The API puts this in a analytics JSON object, but for simplicity, we provide this as just votes. This will be a integer
 
@@ -138,10 +140,11 @@ class IBLBot(IBLBaseUser):
         super().__init__(id, json)
         
         # Handle analytics
-        self.guild_count = self.analytics["servers"]
-        self.shard_count = self.analytics["shards"]
-        self.votes = self.analytics["votes"]
-        self.invites = self.analytics["invites"]
+        for k, v in self.analytics.items():
+            self.__dict__[k] = v
+        for k, v in self.links.items():
+            self.__dict__[k] = v
+
         del self.__dict__["analytics"]
         del self.__dict__["links"]
 
