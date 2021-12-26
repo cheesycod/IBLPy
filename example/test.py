@@ -21,7 +21,7 @@ async def on_message(msg):
 async def on_ready():
     print(f"Ready! {client.user}")
     r = await ibl.get_bot()
-    print(r)
+    print(r, r.servers, r.views, r.website, vars(r))
     a = IBLPy.Webhook(botcli = ibl, secret = "MY_SECRET", coro = got_vote)
     ap = IBLPy.AutoPoster(interval = 300, botcli = ibl, discli = client, on_post = test_poster, sharding = True)
     ap.start()

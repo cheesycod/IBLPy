@@ -1,0 +1,15 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+IBLPy/__init__.py
+IBLPy/classes.py
+IBLPy/config.py
+IBLPy/http.py
+IBLPy/main.py
+IBLPy/ws.py
+IBLPy.egg-info/PKG-INFO
+IBLPy.egg-info/SOURCES.txt
+IBLPy.egg-info/dependency_links.txt
+IBLPy.egg-info/requires.txt
+IBLPy.egg-info/top_level.txt
