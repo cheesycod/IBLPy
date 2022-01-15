@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 import IBLPy, asyncio, discord
 from testcfg import TOKEN
 

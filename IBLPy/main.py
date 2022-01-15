@@ -12,7 +12,7 @@ class BotClient():
     """
         Initialize a Infinity Bots List (IBL) Bot Client. You can use this to get/post bot stats and fetch a bot!
             
-        :param id: The Bot ID you wish to use with the IBL API
+        :param bot_id: The Bot ID you wish to use with the IBL API
 
         :param api_token: The API Token of the bot. You can find this by clicking API Token under the "Owner Section". 
             This is optional however you will not be able to post stats if you do not pass a API Token
@@ -20,6 +20,7 @@ class BotClient():
 
     def __init__(self, bot_id: int, api_token: Optional[str] = ""):
         self.bot_id = bot_id
+        self.id = bot_id # Compatibility purposes
         self.http = _http.BotHTTP(bot_id)
         
         if api_token:

@@ -13,12 +13,12 @@ try:
         """
             Represents a internal IBL Vote. IBLPy will make this a Vote class
         """
-        timeStamp: str
+        timeStamp: int
         userID: str
         userName: str
         botID: str
         type: str
-        count: int = 0
+        count: Union[int, str] = 0
 
 
     class Vote():
@@ -42,6 +42,15 @@ try:
             self.user_id = user_id
             self.test = test
             self.timestamp = timestamp
+
+            if count.isdigit():
+                self.count = int(count)
+            else:
+                self.count = 0
+
+    @router.post("/_dbg")
+    async def debug_webhook(request: Request):
+        print((await request.body()), secret)
 
     @router.post("/")
     async def iblpy_webhook(vote_internal: VoteInternal, Authorization: str = Header("INVALID_SECRET")):
