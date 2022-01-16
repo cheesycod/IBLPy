@@ -231,7 +231,9 @@
 <dt class="sig sig-object py" id="IBLPy.classes.IBLBot">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">IBLPy.classes.</span></span><span class="sig-name descname"><span class="pre">IBLBot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#IBLPy.classes.IBLBot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#IBLPy.classes.IBLBaseUser" title="IBLPy.classes.IBLBaseUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">IBLPy.classes.IBLBaseUser</span></code></a></p>
-<p>IBLBot is internally a part of the base_fn module (which provides all of IBLPy’s base classes and functions). It represents a bot on IBL. The exact parameters of an IBLBot may change and IBLPy is designed to handle such changes automatically. Here are the parameters that we know of right now:</p>
+<p>IBLBot is internally a part of the base_fn module (which provides all of IBLPy’s base classes and functions). 
+It represents a bot on IBL. The exact parameters of an IBLBot may change and IBLPy is designed to handle such changes automatically. 
+Here are the parameters that we know of right now:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -247,8 +249,8 @@
 <li><p><strong>staff</strong> – Whether the bot is a staff bot or not. This will be a boolean</p></li>
 <li><p><strong>nsfw</strong> – Whether the bot is marked as an NSFW (Not Safe For Work) bot or not. This will be a boolean</p></li>
 <li><p><strong>certified</strong> – Whether the bot is certified or not. This will be a boolean</p></li>
-<li><p><strong>guild_count</strong> – The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just guild_count. This will be a integer</p></li>
-<li><p><strong>shard_count</strong> – The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just shard_count. This will be a integer</p></li>
+<li><p><strong>servers</strong> – The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just guild_count. This will be a integer</p></li>
+<li><p><strong>shards</strong> – The server count of the bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just shard_count. This will be a integer</p></li>
 <li><p><strong>votes</strong> – The amount of votes the bot has. The API puts this in a analytics JSON object, but for simplicity, we provide this as just votes. This will be a integer</p></li>
 <li><p><strong>invites</strong> – The amount of people who have invited your bot. The API puts this in a analytics JSON object, but for simplicity, we provide this as just invites. This will be a integer</p></li>
 <li><p><strong>banner</strong> – The bots banner. The API puts this in a links JSON object, but for simplicity, we provide this as just banner. This will be a string or None (if not found)</p></li>

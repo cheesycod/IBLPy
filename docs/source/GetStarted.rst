@@ -5,13 +5,13 @@ Using IBLPy is easy. Here, we will assume you are just using this to post stats 
 
 You can create a Bot Client like this::
 
-   ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
+   ibl = IBLPy.BotClient(bot_id = bot_id, api_token = api_token_here)
 
 Replace bot_id and api_token_here with your bots ID and the api token (you don't have to give your api token and you can remove this parameter altogether if you just need to get the bot, but for autoposting and stat posting, you need to provide an API Token)
 
 Next setup discord.py normally (with a ``on_ready`` event). You will get something like this (the exact discord.py Client you use may be different)::
 
-   ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
+   ibl = IBLPy.BotClient(bot_id = bot_id, api_token = api_token_here)
    client = discord.Client()
 
    @client.event
@@ -27,7 +27,7 @@ The ``on_ready`` event is where we will do our autoposting and webhooks. If you 
 
 In most cases, you will want to use autoposting to do this, but you `can` do it manually like below::
 
-   ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
+   ibl = IBLPy.BotClient(bot_id = bot_id, api_token = api_token_here)
 
    res = await ibl.set_stats(guild_count = guild_count_here, shard_count = shard_count_here) # Asynchronous, needs to be in an async function
    
@@ -64,7 +64,7 @@ If you run this now, you will have discord.py, autoposting and webhooks working 
 
 IBLPy makes it easy to get a bot from the API and parses it for you in a easy to use format of :class:`~IBLPy.base_fn.IBLBot`. To use this, create a Bot Client of the bot you want to get (with or without the API token). Then call ``get_bot`` like below::
 
-   ibl = IBLPy.BotClient(id = bot_id, api_token = api_token_here)
+   ibl = IBLPy.BotClient(bot_id = bot_id, api_token = api_token_here)
    
    bot = await ibl.get_bot() # Asynchronous, needs to be in an async function
 
