@@ -162,7 +162,7 @@ class IBLUser(IBLBaseUser):
 
         :param id: The id of the user. This will be a integer
 
-        :param username: The name of the user. This will be a string
+        :param username: The name of the user. This will be a string or None if not fetchable. **This internally comes from japi.rest**
 
         :param nickname: The nickname of the user. This will be a string or None (if not found)
 
@@ -176,5 +176,15 @@ class IBLUser(IBLBaseUser):
 
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
-    def __init__(self, id, json):
-        super().__init__(id, json)     
+    def __init__(self, discord, id, json, no_username: bool = False):
+        if not no_username:
+            japi = requests.get(f"https://japi.rest/discord/v1/user/{id}")
+            japi_json = japi.json()
+            try:
+                self.username = japi_json["data"]["username"]
+            except Exception as exc:
+                print(exc)
+                self.username = None
+        else:
+            self.username = None
+        super().__init__(id, json)  
