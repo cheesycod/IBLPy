@@ -56,6 +56,18 @@ class BotClient():
         """
         return await self.http.get_bot()
 
+    async def has_user_voted(self, user_id: int):
+        """
+            This returns whether or not a user has voted
+
+            :return: This will be returned if you are ratelimited
+            :rtype: IBLAPIResponse
+
+            :return: Whether or not the user has voted or not
+            :rtype: bool
+        """
+        return await self.http.has_user_voted(user_id)
+
 class UserClient():
     """
         Initialize a Infinity Bots List (IBL) User Client. You can use this to get user stats!

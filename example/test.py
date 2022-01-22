@@ -22,6 +22,9 @@ async def on_message(msg):
 @client.event
 async def on_ready():
     print(f"Ready! {client.user}")
+    print("Has Rootspring voted?")
+    r = await ibl.has_user_voted(563808552288780322)
+    print(r)
     r = await ibl.get_bot()
     print(r, r.servers, r.views, r.website, vars(r))
     a = IBLPy.Webhook(botcli = ibl, secret = "MY_SECRET", coro = got_vote)

@@ -85,6 +85,17 @@ class BotHTTP(BaseHTTP):
         
         return IBLBot(self.id, api_res.json)
 
+    async def has_user_voted(self, user_id: int):
+        api_res = await self.request(
+            method="GET",
+            endpoint=f"/votes/{self.id}/{user_id}",
+            auth=False
+        )
+
+        if not api_res.success:
+            return api_res
+        return api_res.json["hasVoted"]
+
     
 class UserHTTP(BaseHTTP):         
     async def get_user(self, debug: bool = False):
