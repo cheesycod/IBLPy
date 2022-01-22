@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Main Classes" href="MainClasses.html" />
 
     <meta name="generator" content="sphinx-4.2.0, furo 2021.11.23"/>
-        <title>Base Classes - IBLPy 2.0.4 documentation</title>
+        <title>Base Classes - IBLPy 2.0.8 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">IBLPy 2.0.4 documentation</div></a>
+      <a href="index.html"><div class="brand">IBLPy 2.0.8 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">IBLPy 2.0.4 documentation</span>
+  <span class="sidebar-brand-text">IBLPy 2.0.8 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -299,14 +299,14 @@ Here are the parameters that we know of right now:</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="IBLPy.classes.IBLUser">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">IBLPy.classes.</span></span><span class="sig-name descname"><span class="pre">IBLUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#IBLPy.classes.IBLUser" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">IBLPy.classes.</span></span><span class="sig-name descname"><span class="pre">IBLUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">japi_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#IBLPy.classes.IBLUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#IBLPy.classes.IBLBaseUser" title="IBLPy.classes.IBLBaseUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">IBLPy.classes.IBLBaseUser</span></code></a></p>
 <p>IBLUser is internally a part of the base_fn module (which provides all of IBLPy’s base classes and functions). It represents a user on IBL. The exact parameters of an IBLUser may change and IBLPy is designed to handle such changes automatically. Here are the parameters that we know of right now:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> – The id of the user. This will be a integer</p></li>
-<li><p><strong>username</strong> – The name of the user. This will be a string</p></li>
+<li><p><strong>user</strong> – A JAPI user object (see [here](<a class="reference external" href="https://docs.japi.rest/#discord-user">https://docs.japi.rest/#discord-user</a>)). This will be a dict (the value of ‘data’) or None if not fetchable. <strong>This internally comes from japi.rest</strong></p></li>
 <li><p><strong>nickname</strong> – The nickname of the user. This will be a string or None (if not found)</p></li>
 <li><p><strong>about</strong> – The users description/about text. This will be a string</p></li>
 <li><p><strong>certified_dev</strong> – Whether the user is a certified developer or not. This will be a boolean</p></li>

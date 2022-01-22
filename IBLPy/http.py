@@ -103,9 +103,16 @@ class UserHTTP(BaseHTTP):
             method="GET",
             endpoint=f"/user/{self.id}", 
         )
-    
+
         if not api_res.success:
             return api_res
+
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(f"https://japi.rest/discord/v1/user/{self.id}") as res:
+                if res.status == 200:
+                    japi_json = await res.json()
+                else:
+                    japi_json = None
     
-        return IBLUser(self.id, api_res.json)
+        return IBLUser(self.id, api_res.json, japi_json)
 

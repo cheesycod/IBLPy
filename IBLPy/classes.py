@@ -183,15 +183,9 @@ class IBLUser(IBLBaseUser):
 
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
-    def __init__(self, discord, id, json, no_user: bool = False):
-        if not no_username:
-            japi = requests.get(f"https://japi.rest/discord/v1/user/{id}")
-            japi_json = japi.json()
-            try:
-                self.user = japi_json["data"]
-            except Exception as exc:
-                print(exc)
-                self.user = None
+    def __init__(self, id, json, japi_data):
+        if japi_data:
+            self.user = japi_data["data"]
         else:
             self.user = None
         
