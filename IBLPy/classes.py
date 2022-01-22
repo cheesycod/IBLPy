@@ -6,9 +6,16 @@ class InvalidMode(Exception):
     """Raised when you don't have the required mode (package) to perform the action such as trying to do an asynchronous API request without having aiohttp_requests installed or trying to do a webhook without fastapi+uvicorn"""
     def __init__(self, mode):
         if mode == "async":
-            super().__init__("In order to use IBLPy asynchronous API requests, you must have aiohttp_requests installed")
+            super().__init__("In order to use IBLPy asynchronous API requests, you must have aiohttp, requests and aiohttp_requests installed")
         elif mode == "fastapi":
             super().__init__("In order to use IBLPy webhooks, you must have fastapi and uvicorn installed")
+        elif mode == "misc":
+            super().__init__("Parts of IBLPy rely on requests to fetch information such as user fetching...")
+
+try:
+    import requests
+except:
+    raise InvalidMode("misc")
 
 class IBLAPIRatelimit(Exception):
     """Raised when you are being ratelimited by IBL. The ratelimit for posting stats is 3 requests per 5 minutes and is unknown/variable for getting stats from the API"""
@@ -162,7 +169,7 @@ class IBLUser(IBLBaseUser):
 
         :param id: The id of the user. This will be a integer
 
-        :param username: The name of the user. This will be a string or None if not fetchable. **This internally comes from japi.rest**
+        :param user: A JAPI user object (see [here](https://docs.japi.rest/#discord-user)). This will be a dict (the value of 'data') or None if not fetchable. **This internally comes from japi.rest**
 
         :param nickname: The nickname of the user. This will be a string or None (if not found)
 
@@ -176,15 +183,21 @@ class IBLUser(IBLBaseUser):
 
         :param website: The users listed website. The API puts this in a links JSON object, but for simplicity, we provide this as just website. This will be a string or None (if not found)
     """
-    def __init__(self, discord, id, json, no_username: bool = False):
+    def __init__(self, discord, id, json, no_user: bool = False):
         if not no_username:
             japi = requests.get(f"https://japi.rest/discord/v1/user/{id}")
             japi_json = japi.json()
             try:
-                self.username = japi_json["data"]["username"]
+                self.user = japi_json["data"]
             except Exception as exc:
                 print(exc)
-                self.username = None
+                self.user = None
         else:
-            self.username = None
+            self.user = None
+        
+        if not self.user:
+            self.username = ""
+        else:
+            self.username = self.user["username"]
+
         super().__init__(id, json)  
