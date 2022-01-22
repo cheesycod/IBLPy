@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Main Classes" href="MainClasses.html" /><link rel="prev" title="IBLPy Documentation" href="index.html" />
 
     <meta name="generator" content="sphinx-4.2.0, furo 2021.11.23"/>
-        <title>Getting Started - IBLPy 2.0.0a0 documentation</title>
+        <title>Getting Started - IBLPy 2.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">IBLPy 2.0.0a0 documentation</div></a>
+      <a href="index.html"><div class="brand">IBLPy 2.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">IBLPy 2.0.0a0 documentation</span>
+  <span class="sidebar-brand-text">IBLPy 2.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -188,12 +188,12 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>Using IBLPy is easy. Here, we will assume you are just using this to post stats using our autoposter and a webhook. The first thing you will need to do is create a Bot Client. A Bot Client is the base of all bot operations on IBLPy (there is also a User Client as the base of all user operations on IBLPy).</p>
 <p>You can create a Bot Client like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="n">bot_id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Replace bot_id and api_token_here with your bots ID and the api token (you don’t have to give your api token and you can remove this parameter altogether if you just need to get the bot, but for autoposting and stat posting, you need to provide an API Token)</p>
 <p>Next setup discord.py normally (with a <code class="docutils literal notranslate"><span class="pre">on_ready</span></code> event). You will get something like this (the exact discord.py Client you use may be different):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="n">bot_id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">discord</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 
 <span class="nd">@client</span><span class="o">.</span><span class="n">event</span>
@@ -207,7 +207,7 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">on_ready</span></code> event is where we will do our autoposting and webhooks. If you are not using discord.py, please check the Documentation for which functions you have to use.)</p>
 <p><strong>Posting Stats Manually</strong></p>
 <p>In most cases, you will want to use autoposting to do this, but you <cite>can</cite> do it manually like below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="n">bot_id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
 
 <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ibl</span><span class="o">.</span><span class="n">set_stats</span><span class="p">(</span><span class="n">guild_count</span> <span class="o">=</span> <span class="n">guild_count_here</span><span class="p">,</span> <span class="n">shard_count</span> <span class="o">=</span> <span class="n">shard_count_here</span><span class="p">)</span> <span class="c1"># Asynchronous, needs to be in an async function</span>
 
@@ -236,7 +236,7 @@
 <p>If you run this now, you will have discord.py, autoposting and webhooks working simultaneously! You’re done!</p>
 <p><strong>Getting A Bot</strong></p>
 <p>IBLPy makes it easy to get a bot from the API and parses it for you in a easy to use format of <code class="xref py py-class docutils literal notranslate"><span class="pre">IBLBot</span></code>. To use this, create a Bot Client of the bot you want to get (with or without the API token). Then call <code class="docutils literal notranslate"><span class="pre">get_bot</span></code> like below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ibl</span> <span class="o">=</span> <span class="n">IBLPy</span><span class="o">.</span><span class="n">BotClient</span><span class="p">(</span><span class="n">bot_id</span> <span class="o">=</span> <span class="n">bot_id</span><span class="p">,</span> <span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token_here</span><span class="p">)</span>
 
 <span class="n">bot</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ibl</span><span class="o">.</span><span class="n">get_bot</span><span class="p">()</span> <span class="c1"># Asynchronous, needs to be in an async function</span>
 
